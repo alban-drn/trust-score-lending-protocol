@@ -10,6 +10,11 @@ import Markets from "./pages/Markets";
 import Schema from "./pages/Schema";
 import CreditScoring from "./pages/CreditScoring";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import Borrow from "./pages/Borrow";
+import Supply from "./pages/Supply";
+import Repay from "./pages/Repay";
+import DIDDocuments from "./pages/DIDDocuments";
+import RiskAnalysis from "./pages/RiskAnalysis";
 
 const queryClient = new QueryClient();
 
@@ -19,19 +24,18 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <SidebarProvider defaultCollapsed={false}>
+        <SidebarProvider>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/markets" element={<Markets />} />
             <Route path="/schema" element={<Schema />} />
             <Route path="/credit-scoring" element={<CreditScoring />} />
             
-            {/* Ces routes seraient implémentées dans des itérations futures */}
-            <Route path="/borrow" element={<NotFound />} />
-            <Route path="/supply" element={<NotFound />} />
-            <Route path="/repay" element={<NotFound />} />
-            <Route path="/kyc" element={<NotFound />} />
-            <Route path="/risk-analysis" element={<NotFound />} />
+            <Route path="/borrow" element={<Borrow />} />
+            <Route path="/supply" element={<Supply />} />
+            <Route path="/repay" element={<Repay />} />
+            <Route path="/did-documents" element={<DIDDocuments />} />
+            <Route path="/risk-analysis" element={<RiskAnalysis />} />
             
             <Route path="*" element={<NotFound />} />
           </Routes>

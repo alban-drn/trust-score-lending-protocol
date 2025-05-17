@@ -11,7 +11,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarTrigger,
-  useSidebar,
 } from "@/components/ui/sidebar";
 import {
   Activity,
@@ -45,12 +44,11 @@ const lendingItems = [
 
 const aiItems = [
   { title: "AI Credit Scoring", icon: Star, url: "/credit-scoring" },
-  { title: "KYC & Documents", icon: FileText, url: "/kyc" },
+  { title: "DID & Documents", icon: FileText, url: "/did-documents" },
   { title: "Risk Analysis", icon: Activity, url: "/risk-analysis" },
 ];
 
 const SidebarLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { collapsed } = useSidebar();
   const location = useLocation();
   const currentPath = location.pathname;
 
@@ -64,17 +62,20 @@ const SidebarLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         : "text-gray-300 hover:bg-aave-blue-gray hover:text-white"
     );
 
+  // Check if sidebar is collapsed
+  const isSidebarCollapsed = false; // We'll use this directly since 'collapsed' isn't available
+
   return (
     <div className="flex min-h-screen w-full">
       <Sidebar
         className={cn(
           "border-r border-aave-light-blue transition-all duration-300",
-          collapsed ? "w-16" : "w-64"
+          isSidebarCollapsed ? "w-16" : "w-64"
         )}
       >
-        <div className={cn("flex items-center p-4", collapsed ? "justify-center" : "")}>
-          {!collapsed ? (
-            <div className="font-bold text-xl aave-gradient">AaveAI</div>
+        <div className={cn("flex items-center p-4", isSidebarCollapsed ? "justify-center" : "")}>
+          {!isSidebarCollapsed ? (
+            <div className="font-bold text-xl aave-gradient">QuickLoan</div>
           ) : (
             <div className="h-8 w-8 bg-gradient-to-br from-aave-primary to-aave-secondary rounded-full"></div>
           )}
@@ -83,7 +84,7 @@ const SidebarLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
         <SidebarContent>
           <SidebarGroup>
-            <SidebarGroupLabel className={cn("text-gray-400 text-xs", collapsed && "sr-only")}>
+            <SidebarGroupLabel className={cn("text-gray-400 text-xs", isSidebarCollapsed && "sr-only")}>
               Main
             </SidebarGroupLabel>
             <SidebarGroupContent>
@@ -93,7 +94,7 @@ const SidebarLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                     <SidebarMenuButton asChild>
                       <NavLink to={item.url} end className={getNavClass}>
                         <item.icon className="mr-2 h-4 w-4" />
-                        {!collapsed && <span>{item.title}</span>}
+                        {!isSidebarCollapsed && <span>{item.title}</span>}
                       </NavLink>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -103,7 +104,7 @@ const SidebarLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
           </SidebarGroup>
 
           <SidebarGroup>
-            <SidebarGroupLabel className={cn("text-gray-400 text-xs", collapsed && "sr-only")}>
+            <SidebarGroupLabel className={cn("text-gray-400 text-xs", isSidebarCollapsed && "sr-only")}>
               Lending
             </SidebarGroupLabel>
             <SidebarGroupContent>
@@ -113,7 +114,7 @@ const SidebarLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                     <SidebarMenuButton asChild>
                       <NavLink to={item.url} end className={getNavClass}>
                         <item.icon className="mr-2 h-4 w-4" />
-                        {!collapsed && <span>{item.title}</span>}
+                        {!isSidebarCollapsed && <span>{item.title}</span>}
                       </NavLink>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -123,7 +124,7 @@ const SidebarLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
           </SidebarGroup>
 
           <SidebarGroup>
-            <SidebarGroupLabel className={cn("text-gray-400 text-xs", collapsed && "sr-only")}>
+            <SidebarGroupLabel className={cn("text-gray-400 text-xs", isSidebarCollapsed && "sr-only")}>
               AI Credit System
             </SidebarGroupLabel>
             <SidebarGroupContent>
@@ -133,7 +134,7 @@ const SidebarLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                     <SidebarMenuButton asChild>
                       <NavLink to={item.url} end className={getNavClass}>
                         <item.icon className="mr-2 h-4 w-4" />
-                        {!collapsed && <span>{item.title}</span>}
+                        {!isSidebarCollapsed && <span>{item.title}</span>}
                       </NavLink>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
