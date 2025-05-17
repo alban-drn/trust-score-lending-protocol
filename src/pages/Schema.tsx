@@ -430,7 +430,7 @@ const Schema = () => {
                           Since the loan is fully collateralized, the risk is minimal.
                         </p>
                         <p>
-                          <strong className="text-white">Result:</strong> Each timely Repayment improves Alice's BorrowHistory and TrustScore for future loans.
+                          <strong className="text-white">Result:</strong> Each timely Repayment improves Alice&apos;s BorrowHistory and TrustScore for future loans.
                         </p>
                       </div>
                     </CardContent>
@@ -443,13 +443,13 @@ const Schema = () => {
                     <CardContent>
                       <div className="rounded-lg bg-aave-darker p-4 mb-4 border border-aave-light-blue text-sm">
                         <p className="mb-2">
-                          Bob has a wallet that's 2 years old with good history. He wants to borrow 30,000 € with only 5,000 € of ETH as collateral.
+                          Bob has a wallet that&apos;s 2 years old with good history. He wants to borrow 30,000 € with only 5,000 € of ETH as collateral.
                         </p>
                         <ul className="list-disc list-inside space-y-1 text-gray-400">
                           <li>Existing User (Bob) with mature Wallet</li>
                           <li>Rich OnChainActivity and positive BorrowHistory</li>
                           <li>High TrustScore based on blockchain behavior</li>
-                          <li>KYCFile required and submitted (loan > collateral)</li>
+                          <li>KYCFile required and submitted (loan &gt; collateral)</li>
                           <li>RiskScore combines on-chain data with KYC verification</li>
                           <li>Loan approved with favorable terms</li>
                         </ul>
@@ -457,7 +457,7 @@ const Schema = () => {
 
                       <div className="text-sm text-gray-400">
                         <p className="mb-2">
-                          <strong className="text-white">Key Entity Interaction:</strong> The AI evaluates both Bob's excellent on-chain reputation (TrustScore) 
+                          <strong className="text-white">Key Entity Interaction:</strong> The AI evaluates both Bob&apos;s excellent on-chain reputation (TrustScore) 
                           and verified off-chain identity documents (KYCFile).
                         </p>
                         <p>
