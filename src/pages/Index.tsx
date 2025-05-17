@@ -4,7 +4,7 @@ import SidebarLayout from "@/components/layout/SidebarLayout";
 import Header from "@/components/layout/Header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Download, BarChart3, Activity, Wallet } from "lucide-react";
+import { ArrowRight, Download, BarChart3, Activity, Wallet, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Dashboard = () => {

@@ -19,14 +19,14 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <SidebarProvider collapsedWidth={64} defaultCollapsed={false}>
+        <SidebarProvider defaultCollapsed={false}>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/markets" element={<Markets />} />
             <Route path="/schema" element={<Schema />} />
             <Route path="/credit-scoring" element={<CreditScoring />} />
             
-            {/* These routes would be implemented in future iterations */}
+            {/* Ces routes seraient implémentées dans des itérations futures */}
             <Route path="/borrow" element={<NotFound />} />
             <Route path="/supply" element={<NotFound />} />
             <Route path="/repay" element={<NotFound />} />

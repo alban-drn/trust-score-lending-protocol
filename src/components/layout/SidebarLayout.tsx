@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import {
   Sidebar,
   SidebarContent,
@@ -29,7 +29,7 @@ import {
   CreditCard
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { NavLink } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const mainMenuItems = [
   { title: "Dashboard", icon: Home, url: "/" },
@@ -51,7 +51,7 @@ const aiItems = [
 
 const SidebarLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { collapsed } = useSidebar();
-  const location = location || { pathname: "/" };
+  const location = useLocation();
   const currentPath = location.pathname;
 
   const isActive = (path: string) => currentPath === path;
@@ -71,7 +71,6 @@ const SidebarLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
           "border-r border-aave-light-blue transition-all duration-300",
           collapsed ? "w-16" : "w-64"
         )}
-        collapsible
       >
         <div className={cn("flex items-center p-4", collapsed ? "justify-center" : "")}>
           {!collapsed ? (
@@ -83,7 +82,7 @@ const SidebarLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         </div>
 
         <SidebarContent>
-          <SidebarGroup defaultOpen>
+          <SidebarGroup>
             <SidebarGroupLabel className={cn("text-gray-400 text-xs", collapsed && "sr-only")}>
               Main
             </SidebarGroupLabel>
@@ -103,7 +102,7 @@ const SidebarLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
             </SidebarGroupContent>
           </SidebarGroup>
 
-          <SidebarGroup defaultOpen={isGroupActive(lendingItems)}>
+          <SidebarGroup>
             <SidebarGroupLabel className={cn("text-gray-400 text-xs", collapsed && "sr-only")}>
               Lending
             </SidebarGroupLabel>
@@ -123,7 +122,7 @@ const SidebarLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
             </SidebarGroupContent>
           </SidebarGroup>
 
-          <SidebarGroup defaultOpen={isGroupActive(aiItems)}>
+          <SidebarGroup>
             <SidebarGroupLabel className={cn("text-gray-400 text-xs", collapsed && "sr-only")}>
               AI Credit System
             </SidebarGroupLabel>
