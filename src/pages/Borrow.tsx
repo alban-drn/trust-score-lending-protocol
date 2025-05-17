@@ -1,237 +1,270 @@
-
-import React, { useState } from "react";
-import SidebarLayout from "@/components/layout/SidebarLayout";
-import Header from "@/components/layout/Header";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
-import { Info, ArrowRight } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CustomProgress } from "@/components/ui/custom-progress";
+import { Badge } from "@/components/ui/badge";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+import { toast } from "@/components/ui/use-toast"
+import { useToast } from "@/hooks/use-toast"
+import { useNavigate } from 'react-router-dom';
+import { ethers } from 'ethers';
 
-const Borrow = () => {
-  const { toast } = useToast();
-  const [asset, setAsset] = useState<string>("");
-  const [amount, setAmount] = useState<string>("");
-  const [ltv, setLtv] = useState<number[]>([50]);
-  
-  const handleBorrow = () => {
-    toast({
-      title: "Demo Mode",
-      description: "In a real application, this would initiate a borrow transaction.",
-      variant: "default",
-    });
+const Borrow: React.FC = () => {
+  const [borrowAmount, setBorrowAmount] = useState('');
+  const [collateralAmount, setCollateralAmount] = useState('');
+  const [interestRate, setInterestRate] = useState(5.25);
+  const [borrowLimit, setBorrowLimit] = useState(75);
+  const [utilization, setUtilization] = useState(60);
+  const [healthFactor, setHealthFactor] = useState(1.5);
+  const [liquidationThreshold, setLiquidationThreshold] = useState(80);
+  const [availableToBorrow, setAvailableToBorrow] = useState(5000);
+  const [walletAddress, setWalletAddress] = useState('0xYourWalletAddress');
+  const [transactionHash, setTransactionHash] = useState('');
+  const [isBorrowing, setIsBorrowing] = useState(false);
+  const navigate = useNavigate();
+  const { toast } = useToast()
+
+  useEffect(() => {
+    // Simulate fetching data from an API or blockchain
+    setTimeout(() => {
+      setInterestRate(5.25);
+      setBorrowLimit(75);
+      setUtilization(60);
+      setHealthFactor(1.5);
+      setLiquidationThreshold(80);
+      setAvailableToBorrow(5000);
+    }, 500);
+  }, []);
+
+  const handleBorrow = async () => {
+    setIsBorrowing(true);
+    // Simulate a blockchain transaction
+    setTimeout(() => {
+      setTransactionHash('0xSimulatedTransactionHash');
+      setIsBorrowing(false);
+      toast({
+        title: "Borrow Successful!",
+        description: "Your transaction has been confirmed.",
+      })
+    }, 2000);
   };
 
-  const availableAssets = [
-    { name: "Ethereum", symbol: "ETH", logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png", apy: "2.52%" },
-    { name: "USD Coin", symbol: "USDC", logo: "https://cryptologos.cc/logos/usd-coin-usdc-logo.png", apy: "4.92%" },
-    { name: "Wrapped Bitcoin", symbol: "WBTC", logo: "https://cryptologos.cc/logos/wrapped-bitcoin-wbtc-logo.png", apy: "1.94%" },
-    { name: "Dai", symbol: "DAI", logo: "https://cryptologos.cc/logos/multi-collateral-dai-dai-logo.png", apy: "4.63%" },
-  ];
+  const handleMaxBorrow = () => {
+    setBorrowAmount(availableToBorrow.toString());
+  };
+
+  const handleViewTransaction = () => {
+    if (transactionHash) {
+      window.open(`https://etherscan.io/tx/${transactionHash}`, '_blank');
+    }
+  };
+
+  const handleNavigateToRepay = () => {
+    navigate('/repay');
+  };
+
+  const handleCalculate = () => {
+    // Placeholder for calculate logic
+    alert('Calculation logic will be implemented here.');
+  };
 
   return (
-    <SidebarLayout>
-      <div className="flex flex-col h-screen">
-        <Header />
-        <main className="flex-1 p-6 space-y-6 overflow-auto">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-semibold">Borrow</h2>
-          </div>
-
-          <Tabs defaultValue="borrow" className="w-full">
-            <TabsList className="bg-aave-light-blue/20 border border-aave-light-blue/50 mb-6">
-              <TabsTrigger value="borrow">Borrow</TabsTrigger>
-              <TabsTrigger value="debt">Your Debt</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="borrow" className="space-y-6">
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <Card className="bg-aave-blue-gray border-aave-light-blue col-span-2">
-                  <CardHeader>
-                    <CardTitle>Borrow Asset</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-6">
-                    <div className="space-y-4">
-                      <div className="space-y-2">
-                        <Label>Select asset</Label>
-                        <Select value={asset} onValueChange={setAsset}>
-                          <SelectTrigger className="bg-aave-darker border-aave-light-blue">
-                            <SelectValue placeholder="Choose an asset" />
-                          </SelectTrigger>
-                          <SelectContent className="bg-aave-darker border-aave-light-blue">
-                            {availableAssets.map((asset) => (
-                              <SelectItem key={asset.symbol} value={asset.symbol}>
-                                <div className="flex items-center">
-                                  <div className="h-6 w-6 rounded-full overflow-hidden bg-white mr-2">
-                                    <img src={asset.logo} alt={asset.name} className="h-full w-full object-contain" />
-                                  </div>
-                                  <span>{asset.name} ({asset.symbol})</span>
-                                </div>
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label>Amount</Label>
-                        <div className="relative">
-                          <Input
-                            type="text"
-                            placeholder="0.00"
-                            value={amount}
-                            onChange={(e) => setAmount(e.target.value)}
-                            className="bg-aave-darker border-aave-light-blue pr-16"
-                          />
-                          <Button 
-                            variant="ghost" 
-                            className="absolute right-0 top-0 h-full px-3 text-aave-accent"
-                            onClick={() => setAmount("1000")} // Demo max amount
-                          >
-                            MAX
-                          </Button>
-                        </div>
-                        <div className="text-sm text-gray-400 flex justify-between">
-                          <span>Available to borrow: $12,500</span>
-                          <span>Wallet balance: $0.00</span>
-                        </div>
-                      </div>
-
-                      <div className="space-y-2">
-                        <div className="flex justify-between">
-                          <Label>Loan to Value (LTV)</Label>
-                          <span className="text-sm text-aave-accent">{ltv}%</span>
-                        </div>
-                        <Slider
-                          value={ltv}
-                          onValueChange={setLtv}
-                          max={80}
-                          step={1}
-                          className="my-4"
-                        />
-                        <div className="flex justify-between text-xs text-gray-400">
-                          <span>Safe</span>
-                          <span>Moderate</span>
-                          <span>Risky</span>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center justify-between mt-2">
-                        <div className="flex items-center gap-2">
-                          <Switch id="stable-rate" />
-                          <Label htmlFor="stable-rate">Stable interest rate</Label>
-                        </div>
-                        <div className="text-sm text-gray-400 flex items-center">
-                          <Info className="h-4 w-4 mr-1" />
-                          <span>More predictable but higher rate</span>
-                        </div>
-                      </div>
-
-                      <Button 
-                        className="w-full mt-4 aave-button-gradient"
-                        onClick={handleBorrow}
-                        disabled={!asset || !amount}
-                      >
-                        Borrow {asset}
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-aave-blue-gray border-aave-light-blue">
-                  <CardHeader>
-                    <CardTitle>Borrow Summary</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-6">
-                    {asset ? (
-                      <>
-                        <div className="rounded-lg border border-aave-light-blue p-4 space-y-3">
-                          <div className="flex justify-between">
-                            <span className="text-gray-400">Asset</span>
-                            <div className="flex items-center">
-                              {asset && (
-                                <div className="h-5 w-5 rounded-full overflow-hidden bg-white mr-1">
-                                  <img 
-                                    src={availableAssets.find(a => a.symbol === asset)?.logo} 
-                                    alt={asset} 
-                                    className="h-full w-full object-contain" 
-                                  />
-                                </div>
-                              )}
-                              <span>{asset}</span>
-                            </div>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-gray-400">Amount</span>
-                            <span>{amount || '0.00'} {asset}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-gray-400">Interest Rate</span>
-                            <span className="text-aave-primary">
-                              {asset && availableAssets.find(a => a.symbol === asset)?.apy}
-                            </span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-gray-400">Health Factor</span>
-                            <span className="text-green-400">2.17</span>
-                          </div>
-                        </div>
-
-                        <div className="rounded-lg border border-aave-light-blue p-4 space-y-2">
-                          <div className="flex justify-between">
-                            <span className="text-gray-400">Loan to Value</span>
-                            <span>{ltv}%</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-gray-400">Liquidation Threshold</span>
-                            <span>{Math.min(ltv[0] + 20, 90)}%</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-gray-400">Maximum LTV</span>
-                            <span>80%</span>
-                          </div>
-                        </div>
-                      </>
-                    ) : (
-                      <div className="h-64 flex items-center justify-center text-center">
-                        <div className="text-gray-400">
-                          <p>Select an asset to see borrowing details</p>
-                          <ArrowRight className="mx-auto mt-2 h-6 w-6 opacity-50" />
-                        </div>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
+    <div className="container py-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Borrow Form */}
+        <Card className="aave-card">
+          <CardHeader>
+            <CardTitle>Borrow Assets</CardTitle>
+          </CardHeader>
+          <CardContent className="grid gap-4">
+            <div className="grid gap-2">
+              <Label htmlFor="borrowAmount">Borrow Amount</Label>
+              <div className="flex items-center space-x-2">
+                <Input
+                  type="number"
+                  id="borrowAmount"
+                  placeholder="Enter amount"
+                  value={borrowAmount}
+                  onChange={(e) => setBorrowAmount(e.target.value)}
+                />
+                <Button variant="secondary" size="sm" onClick={handleMaxBorrow}>
+                  Max
+                </Button>
               </div>
-            </TabsContent>
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="collateralAmount">Collateral Amount</Label>
+              <Input
+                type="number"
+                id="collateralAmount"
+                placeholder="Enter amount"
+                value={collateralAmount}
+                onChange={(e) => setCollateralAmount(e.target.value)}
+              />
+            </div>
+            <Button className="w-full aave-button-gradient text-white" onClick={handleBorrow} disabled={isBorrowing}>
+              {isBorrowing ? 'Borrowing...' : 'Borrow'}
+            </Button>
+            {transactionHash && (
+              <Button variant="link" onClick={handleViewTransaction}>
+                View Transaction
+              </Button>
+            )}
+          </CardContent>
+        </Card>
 
-            <TabsContent value="debt" className="space-y-6">
-              <Card className="bg-aave-blue-gray border-aave-light-blue">
-                <CardHeader>
-                  <CardTitle>Your Borrowing Positions</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-col items-center justify-center h-64 text-center">
-                    <p className="text-gray-400 mb-2">You have no active borrowing positions</p>
-                    <Button 
-                      onClick={() => document.querySelector('[data-value="borrow"]')?.click()}
-                      className="aave-button-gradient mt-4"
-                    >
-                      Borrow Now
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
-        </main>
+        {/* Borrow Status */}
+        <Card className="aave-card">
+          <CardHeader>
+            <CardTitle>Borrow Status</CardTitle>
+          </CardHeader>
+          <CardContent className="grid gap-4">
+            <div className="space-y-1">
+              <p className="text-sm font-medium">Wallet Address</p>
+              <p className="text-sm text-muted-foreground">{walletAddress}</p>
+            </div>
+            <div className="space-y-1">
+              <p className="text-sm font-medium">Available to Borrow</p>
+              <p className="text-sm text-muted-foreground">{availableToBorrow} USDT</p>
+            </div>
+            <div className="space-y-1">
+              <p className="text-sm font-medium">Interest Rate</p>
+              <p className="text-sm text-muted-foreground">{interestRate}%</p>
+            </div>
+            <Button className="w-full aave-button-gradient text-white" onClick={handleNavigateToRepay}>
+              Repay
+            </Button>
+          </CardContent>
+        </Card>
       </div>
-    </SidebarLayout>
+
+      {/* Risk Parameters */}
+      <div className="mt-8">
+        <h2 className="text-xl font-semibold mb-4">Risk Parameters</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <Card className="aave-card">
+            <CardHeader>
+              <CardTitle>Borrow Limit</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CustomProgress value={borrowLimit} />
+              <p className="text-sm text-muted-foreground mt-2">{borrowLimit}%</p>
+            </CardContent>
+          </Card>
+
+          <Card className="aave-card">
+            <CardHeader>
+              <CardTitle>Utilization</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CustomProgress value={utilization} />
+              <p className="text-sm text-muted-foreground mt-2">{utilization}%</p>
+            </CardContent>
+          </Card>
+
+          <Card className="aave-card">
+            <CardHeader>
+              <CardTitle>Health Factor</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-2xl font-bold">{healthFactor}</p>
+              <p className="text-sm text-muted-foreground mt-2">Ideal: Above 1.0</p>
+            </CardContent>
+          </Card>
+
+          <Card className="aave-card">
+            <CardHeader>
+              <CardTitle>Liquidation Threshold</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CustomProgress value={liquidationThreshold} />
+              <p className="text-sm text-muted-foreground mt-2">{liquidationThreshold}%</p>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
+      {/* Transaction History */}
+      <div className="mt-8">
+        <h2 className="text-xl font-semibold mb-4">Transaction History</h2>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[100px]">Date</TableHead>
+              <TableHead>Transaction Type</TableHead>
+              <TableHead>Amount</TableHead>
+              <TableHead>Status</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow>
+              <TableCell className="font-medium">2024-01-01</TableCell>
+              <TableCell>Borrow</TableCell>
+              <TableCell>1000 USDT</TableCell>
+              <TableCell>
+                <Badge variant="default">Completed</Badge>
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell className="font-medium">2024-01-15</TableCell>
+              <TableCell>Repay</TableCell>
+              <TableCell>500 USDT</TableCell>
+              <TableCell>
+                <Badge variant="outline">Pending</Badge>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </div>
+
+      {/* FAQ Section */}
+      <div className="mt-8">
+        <h2 className="text-xl font-semibold mb-4">Frequently Asked Questions</h2>
+        <Accordion type="single" collapsible>
+          <AccordionItem value="item-1">
+            <AccordionTrigger>What is borrowing in this context?</AccordionTrigger>
+            <AccordionContent>
+              Borrowing allows you to take out assets from the platform by providing collateral.
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="item-2">
+            <AccordionTrigger>How is the interest rate calculated?</AccordionTrigger>
+            <AccordionContent>
+              The interest rate is determined by the utilization rate of the asset.
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="item-3">
+            <AccordionTrigger>What is a health factor?</AccordionTrigger>
+            <AccordionContent>
+              A health factor indicates the safety of your deposited collateral against your borrowed assets.
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      </div>
+
+      {/* Calculate Button */}
+      <div className="mt-8">
+        <Button className="aave-button-gradient text-white" onClick={handleCalculate}>
+          Calculate
+        </Button>
+      </div>
+    </div>
   );
 };
 

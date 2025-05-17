@@ -17,15 +17,10 @@ import {
   BarChart3,
   Database,
   FileText,
-  Globe,
-  Heart,
   Home,
   Wallet,
-  History,
-  Users,
-  Settings,
+  CreditCard,
   Star,
-  CreditCard
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLocation } from "react-router-dom";
@@ -56,9 +51,9 @@ const SidebarLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   const isGroupActive = (items: any[]) => items.some(item => isActive(item.url));
   
   const getNavClass = ({ isActive }: { isActive: boolean }) => 
-    cn("flex items-center py-2 px-3 rounded-lg transition-colors", 
+    cn("flex items-center py-2 px-3 rounded-lg transition-colors font-inter", 
       isActive 
-        ? "bg-aave-accent/10 text-aave-accent font-medium" 
+        ? "bg-aave-primary/10 text-aave-primary font-medium" 
         : "text-gray-300 hover:bg-aave-blue-gray hover:text-white"
     );
 
@@ -75,7 +70,7 @@ const SidebarLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       >
         <div className={cn("flex items-center p-4", isSidebarCollapsed ? "justify-center" : "")}>
           {!isSidebarCollapsed ? (
-            <div className="font-bold text-xl aave-gradient">QuickLoan</div>
+            <div className="font-bold text-xl quickloan-gradient">QuickLoan</div>
           ) : (
             <div className="h-8 w-8 bg-gradient-to-br from-aave-primary to-aave-secondary rounded-full"></div>
           )}

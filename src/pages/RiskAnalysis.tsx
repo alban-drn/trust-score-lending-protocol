@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import SidebarLayout from "@/components/layout/SidebarLayout";
 import Header from "@/components/layout/Header";
@@ -23,6 +22,7 @@ import {
 } from "lucide-react";
 import { CustomProgress } from "@/components/ui/custom-progress";
 import { useToast } from "@/hooks/use-toast";
+import { Check } from "lucide-react";
 
 const RiskAnalysis = () => {
   const { toast } = useToast();
