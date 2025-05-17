@@ -20,10 +20,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-import { toast } from "@/components/ui/use-toast"
 import { useToast } from "@/hooks/use-toast"
 import { useNavigate } from 'react-router-dom';
-import { ethers } from 'ethers';
 
 const Borrow: React.FC = () => {
   const [borrowAmount, setBorrowAmount] = useState('');
@@ -38,7 +36,7 @@ const Borrow: React.FC = () => {
   const [transactionHash, setTransactionHash] = useState('');
   const [isBorrowing, setIsBorrowing] = useState(false);
   const navigate = useNavigate();
-  const { toast } = useToast()
+  const { toast } = useToast();
 
   useEffect(() => {
     // Simulate fetching data from an API or blockchain

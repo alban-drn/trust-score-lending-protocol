@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import {
   Card,
@@ -9,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -33,14 +34,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { ReloadIcon } from "@radix-ui/react-icons";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { HelpCircle } from "lucide-react";
+import { HelpCircle, Loader2 } from "lucide-react";
 import { CustomProgress } from "@/components/ui/custom-progress";
 
 const Supply: React.FC = () => {
@@ -83,11 +83,9 @@ const Supply: React.FC = () => {
     setTimeout(() => {
       const buttonElement = document.getElementById("supply-button");
       if (buttonElement) {
-        buttonElement.dispatchEvent(new MouseEvent('click', {
-          bubbles: true,
-          cancelable: true,
-          view: window
-        }));
+        // Create and dispatch a custom event instead of using click()
+        const customEvent = new Event('customClick');
+        buttonElement.dispatchEvent(customEvent);
       }
     }, 3500);
   };
@@ -122,7 +120,7 @@ const Supply: React.FC = () => {
               >
                 {isLoading ? (
                   <>
-                    <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     Supplying...
                   </>
                 ) : (
